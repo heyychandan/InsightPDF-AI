@@ -28,7 +28,7 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 with st.sidebar:
     st.title("About the Project")
-    st.info("This is a RAG-based AI assistant using Google Gemini 1.5 and FAISS Vector Search.")
+    st.info("This is a RAG-based AI assistant using Google Gemini 3 and FAISS Vector Search.")
     st.write("---")
     st.write("Built by: **Chandan Kumar Singh**")
     
@@ -57,7 +57,7 @@ if pdf is not None:
     # 4. Vector Storage
     if api_key:
         try:
-            # REVERTED TO WORKING EMBEDDING MODEL
+            # SYNCED WITH DASHBOARD: Gemini Embedding 1
             embeddings = GoogleGenerativeAIEmbeddings(
                 model="models/embedding-001", 
                 google_api_key=api_key
@@ -72,9 +72,9 @@ if pdf is not None:
                 docs = vector_store.similarity_search(user_question, k=3)
                 context_text = "\n".join([d.page_content for d in docs])
                 
-                # STABLE CHAT MODEL
+                # SYNCED WITH DASHBOARD: Gemini 3 Flash
                 llm = ChatGoogleGenerativeAI(
-                    model="gemini-1.5-flash", 
+                    model="gemini-3-flash", 
                     google_api_key=api_key
                 )
                 
