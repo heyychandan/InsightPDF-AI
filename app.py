@@ -58,7 +58,7 @@ if pdf is not None:
     if api_key:
         try:
             embeddings = GoogleGenerativeAIEmbeddings(
-                model="models/text-embedding-004", 
+                model="models/embedding-001", # Use this exact string
                 google_api_key=api_key
             )
             
@@ -73,9 +73,8 @@ if pdf is not None:
                 
                 # UPDATED TO GEMINI 1.5 FLASH
                 llm = ChatGoogleGenerativeAI(
-                    model="gemini-1.5-flash", 
-                    google_api_key=api_key,
-                    temperature=0.3 # Lower temperature for more factual RAG responses
+                    model="gemini-3-flash", # Remove the "-preview" part
+                    google_api_key=api_key
                 )
                 
                 prompt = (
