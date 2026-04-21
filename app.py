@@ -58,8 +58,9 @@ if pdf is not None:
     if api_key:
         try:
             # SYNCED WITH DASHBOARD: Gemini Embedding 1
+            # Use the direct name for Gemini Embedding 1
             embeddings = GoogleGenerativeAIEmbeddings(
-                model="models/embedding-001", 
+                model="text-embedding-004", 
                 google_api_key=api_key
             )
             
