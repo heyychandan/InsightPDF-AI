@@ -58,7 +58,7 @@ if pdf is not None:
     if api_key:
         try:
             embeddings = GoogleGenerativeAIEmbeddings(
-                model="models/embedding-001", 
+                model="models/text-embedding-004", 
                 google_api_key=api_key
             )
             
