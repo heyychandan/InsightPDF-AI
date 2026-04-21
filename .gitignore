@@ -1,0 +1,18 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Sensitive API Keys
+.env
+
+# Python caching
+__pycache__/
+*.pyc
+
+# Vector Database (Local index files)
+faiss_index/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
