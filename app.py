@@ -57,8 +57,9 @@ if pdf is not None:
     # 4. Vector Storage
     if api_key:
         try:
+            # REVERTED TO WORKING EMBEDDING MODEL
             embeddings = GoogleGenerativeAIEmbeddings(
-                model="models/text-embedding-004", # Use this exact string
+                model="models/embedding-001", 
                 google_api_key=api_key
             )
             
@@ -71,9 +72,9 @@ if pdf is not None:
                 docs = vector_store.similarity_search(user_question, k=3)
                 context_text = "\n".join([d.page_content for d in docs])
                 
-                # UPDATED TO GEMINI 3 FLASH
+                # STABLE CHAT MODEL
                 llm = ChatGoogleGenerativeAI(
-                   model="gemini-1.5-flash", # Remove the "-preview" part
+                    model="gemini-1.5-flash", 
                     google_api_key=api_key
                 )
                 
