@@ -58,10 +58,8 @@ if pdf is not None:
     if api_key:
         try:
             # STABLE EMBEDDING MODEL (Avoids the v1beta 404)
-            embeddings = GoogleGenerativeAIEmbeddings(
-                model="models/embedding-001", 
-                google_api_key=api_key
-            )
+            from langchain_community.embeddings import HuggingFaceEmbeddings
+            embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
             
             vector_store = FAISS.from_texts(chunks, embedding=embeddings)
             st.success("PDF processed and indexed successfully!")
@@ -74,7 +72,7 @@ if pdf is not None:
                 
                 # STABLE CHAT MODEL (Available globally)
                 llm = ChatGoogleGenerativeAI(
-                    model="gemini-1.5-flash", 
+                    model="gemini-3-flash", 
                     google_api_key=api_key
                 )
                 
