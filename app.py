@@ -8,9 +8,9 @@ from langchain_community.vectorstores import FAISS
 
 # 1. Page Config
 load_dotenv()
-st.set_page_config(page_title="PDF Help", layout="wide")
+st.set_page_config(page_title="InsightPDF AI", layout="wide")
 
-# PROFESSIONAL UI: Hide Streamlit branding and Fork button
+# PROFESSIONAL UI: Hide Streamlit branding
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -28,7 +28,7 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 with st.sidebar:
     st.title("About the Project")
-    st.info("This is a RAG-based AI assistant using Google Gemini 3 and FAISS Vector Search.")
+    st.info("RAG-based AI assistant built with Google Gemini and FAISS.")
     st.write("---")
     st.write("Built by: **Chandan Kumar Singh**")
     
@@ -57,10 +57,9 @@ if pdf is not None:
     # 4. Vector Storage
     if api_key:
         try:
-            # SYNCED WITH DASHBOARD: Gemini Embedding 1
-            # Use the direct name for Gemini Embedding 1
+            # STABLE EMBEDDING MODEL (Avoids the v1beta 404)
             embeddings = GoogleGenerativeAIEmbeddings(
-                model="text-embedding-004", 
+                model="models/embedding-001", 
                 google_api_key=api_key
             )
             
@@ -73,9 +72,9 @@ if pdf is not None:
                 docs = vector_store.similarity_search(user_question, k=3)
                 context_text = "\n".join([d.page_content for d in docs])
                 
-                # SYNCED WITH DASHBOARD: Gemini 3 Flash
+                # STABLE CHAT MODEL (Available globally)
                 llm = ChatGoogleGenerativeAI(
-                    model="gemini-3-flash", 
+                    model="gemini-1.5-flash", 
                     google_api_key=api_key
                 )
                 
@@ -89,13 +88,11 @@ if pdf is not None:
                 with st.spinner("Analyzing document..."):
                     response = llm.invoke(prompt)
                     
-                    if isinstance(response.content, list):
-                        final_answer = "".join(
-                            [item['text'] if isinstance(item, dict) and 'text' in item else str(item) 
-                             for item in response.content]
-                        )
-                    else:
+                    # Handle different response formats safely
+                    if hasattr(response, 'content'):
                         final_answer = response.content
+                    else:
+                        final_answer = str(response)
 
                     st.markdown("### 🤖 Assistant Response")
                     st.success(final_answer)
@@ -104,4 +101,4 @@ if pdf is not None:
             st.error(f"Error initializing AI: {e}")
             
     else:
-        st.error("Please add GOOGLE_API_KEY to your settings.")
+        st.error("Please add GOOGLE_API_KEY to your .env file.")
